@@ -1,0 +1,34 @@
+
+default: all
+
+CC = gcc
+
+CONFIG += ansi
+CONFIG += debug
+
+CxPath = ../cx
+BinPath = ../bin
+BldPath = exc
+
+ExeList = count-search polystep
+Deps := $(ExeList)
+ExeList := $(addprefix $(BinPath)/,$(ExeList))
+Objs = $(addprefix $(BldPath)/,$(addsuffix .o,$(Deps)))
+
+include $(CxPath)/include.mk
+
+all: $(ExeList)
+
+$(call binexe,count-search): $(BldPath)/count-search.o \
+	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(call binexe,polystep): $(BldPath)/polystep.o \
+	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(CC) $(CFLAGS) -o $@ $^ -lgmp
+
+.PHONY: clean
+clean:
+	rm -fr $(PfxBldPath)
+	rm -f $(ExeList)
+

@@ -1,0 +1,357 @@
+
+\input{preamble}
+
+\begin{document}
+\title{Successive Values of Polynomials}
+\author{Alex Klinkhamer}
+\maketitle
+
+\section{Definitions}
+
+Define the following square matrix $G$ of any size and its inverse $G^{-1}$.
+
+\begin{equation}
+ \label{eq:def_G}
+ G[i][j] \equiv
+ \begin{cases}
+  G[i-1][j-1] - i G[i][j-1] & i,j > 0 \\
+  1 & i + j = 0 \\
+  0 & i j = 0
+ \end{cases}
+\end{equation}
+
+\begin{equation}
+ \label{eq:def_G_inv}
+ G^{-1}[i][j] \equiv
+ \begin{cases}
+  G^{-1}[i-1][j-1] + j G^{-1}[i][j-1] & i,j > 0 \\
+  1 & i + j = 0 \\
+  0 & i j = 0
+ \end{cases}
+\end{equation}
+
+For example, these looks like:
+
+\[
+ G_5 = 
+\left[
+\begin{array}{rrrrrr}
+ 1 & 0 &  0 &  0 &  0 &   0 \\
+ 0 & 1 & -1 &  1 & -1 &   1 \\
+ 0 & 0 &  1 & -3 &  7 & -15 \\
+ 0 & 0 &  0 &  1 & -6 &  25 \\
+ 0 & 0 &  0 &  0 &  1 & -10 \\
+ 0 & 0 &  0 &  0 &  0 &   1 \\
+\end{array}
+\right]
+\]
+
+\[
+ G_5^{-1} = 
+\left[
+\begin{array}{rrrrrr}
+ 1 & 0 &  0 &  0 &  0 &  0 \\
+ 0 & 1 &  1 &  2 &  6 & 24 \\
+ 0 & 0 &  1 &  3 & 11 & 50 \\
+ 0 & 0 &  0 &  1 &  6 & 35 \\
+ 0 & 0 &  0 &  0 &  1 & 10 \\
+ 0 & 0 &  0 &  0 &  0 &  1 \\
+\end{array}
+\right]
+\]
+
+Let $\vbl{Fac}$ be the factorial matrix.
+\begin{equation}
+ \label{eq:def_Fac}
+ \vbl{Fac}[i][j] \equiv
+ \begin{cases}
+  i! & i = j \\
+  0 & i \ne j
+ \end{cases}
+\end{equation}
+
+\[
+ \vbl{Fac}_5 =
+\left[
+\begin{array}{rrrrrr}
+ 1 & 0 & 0 & 0 &  0 &   0 \\
+ 0 & 1 & 0 & 0 &  0 &   0 \\
+ 0 & 0 & 2 & 0 &  0 &   0 \\
+ 0 & 0 & 0 & 6 &  0 &   0 \\
+ 0 & 0 & 0 & 0 & 24 &   0 \\
+ 0 & 0 & 0 & 0 &  0 & 120 \\
+\end{array}
+\right]
+\]
+
+Let $\vbl{Step}$ be an upper triangular matrix of ones.
+\begin{equation}
+ \label{eq:def_Step}
+ \vbl{Step}[i][j] \equiv
+ \begin{cases}
+  1 & i \le j \\
+  0 & i > j
+ \end{cases}
+\end{equation}
+
+\[
+ \vbl{Step}_2 =
+\left[
+\begin{array}{rrr}
+ 1 & 1 & 1 \\
+ 0 & 1 & 1 \\
+ 0 & 0 & 1 \\
+\end{array}
+\right]
+\]
+
+Let $(\vbl{Scale}\ c)$ be a function of $c$ which returns the following matrix.
+\begin{equation}
+ \label{eq:def_Scale}
+ (\vbl{Scale}\ c)[i][j] =
+ \begin{cases}
+  c^i & i = j \\
+  0 & i \ne j
+ \end{cases}
+\end{equation}
+
+
+The matrix $\vbl{Fac}\,G$ is rather interesting.
+It can be built by Pascal's triangle.
+Define $\vect{pasc}_n [i]\equiv (-1)^i {n \choose i+1}$.
+Below is the method for deriving an arbitrary $G_i$ matrix.
+
+\[
+ \vbl{Fac}\,G_0\,\vect{pasc}_1\transpose =
+ \left[\begin{array}{r}
+   1 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   1 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   1 \\
+ \end{array}\right]
+\]
+
+\[
+ \vbl{Fac}\,G_1\,\vect{pasc}_2\transpose =
+ \left[\begin{array}{rr}
+   1 & 0 \\
+   0 & 1 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   -1 \\ 2 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   -1 \\ 2 \\
+ \end{array}\right]
+\]
+
+\[
+ \vbl{Fac}\,G_2\,\vect{pasc}_3\transpose =
+ \left[\begin{array}{rrr}
+   1 & 0 &  0 \\
+   0 & 1 & -1 \\
+   0 & 0 &  2 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+    1 \\ -3 \\ 3 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+    1 \\ -6 \\ 6 \\
+ \end{array}\right]
+\]
+
+\[
+ \vbl{Fac}\,G_3\,\vect{pasc}_4\transpose =
+ \left[\begin{array}{rrrr}
+   1 & 0 &  0 &  0 \\
+   0 & 1 & -1 &  1 \\
+   0 & 0 &  2 & -6 \\
+   0 & 0 &  0 &  6 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   -1 \\ 4 \\ -6 \\ 4 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   -1 \\ 14 \\ -36 \\ 24 \\
+ \end{array}\right]
+\]
+
+\[
+ \vbl{Fac}\,G_4\,\vect{pasc}_5\transpose =
+ \left[\begin{array}{rrrrr}
+   1 & 0 &  0 &  0 &   0 \\
+   0 & 1 & -1 &  1 &  -1 \\
+   0 & 0 &  2 & -6 &  14 \\
+   0 & 0 &  0 &  6 & -36 \\
+   0 & 0 &  0 &  0 &  24 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   1 \\ -5 \\ 10 \\ -10 \\ 5 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   1 \\ -30 \\ 150 \\ -240  \\ 120 \\
+ \end{array}\right]
+\]
+
+\[
+ \vbl{Fac}\,G_5 =
+ \left[\begin{array}{rrrrrr}
+   1 & 0 & 0 & 0 &  0 &   0 \\
+   0 & 1 & 0 & 0 &  0 &   0 \\
+   0 & 0 & 2 & 0 &  0 &   0 \\
+   0 & 0 & 0 & 6 &  0 &   0 \\
+   0 & 0 & 0 & 0 & 24 &   0 \\
+   0 & 0 & 0 & 0 &  0 & 120 \\
+ \end{array}\right]
+ \left[\begin{array}{rrrrrr}
+   1 & 0 &  0 &  0 &  0 &   0 \\
+   0 & 1 & -1 &  1 & -1 &   1 \\
+   0 & 0 &  1 & -3 &  7 & -15 \\
+   0 & 0 &  0 &  1 & -6 &  25 \\
+   0 & 0 &  0 &  0 &  1 & -10 \\
+   0 & 0 &  0 &  0 &  0 &   1 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{rrrrrr}
+   1 & 0 &  0 &  0 &   0 &    0 \\
+   0 & 1 & -1 &  1 &  -1 &    1 \\
+   0 & 0 &  2 & -6 &  14 &  -30 \\
+   0 & 0 &  0 &  6 & -36 &  150 \\
+   0 & 0 &  0 &  0 &  24 & -240 \\
+   0 & 0 &  0 &  0 &  0  &  120 \\
+ \end{array}\right]
+\]
+
+\section{Polynomial Steps}
+
+The $\vbl{Fac}\,G$ matrix has another interesting property regarding polynomials.
+
+\begin{example}
+ \label{ex:firstpoly}
+ Single stepping polynomial inputs.
+\end{example}
+
+Consider a polynomial $f(x) = 7 - 2x + x^2$.
+Some of its values are $f(0)=7$, $f(1)=6$, $f(2)=7$, $f(3)=10$.
+Let us define the polynomial by a vector $\vect{f} = (7, -2, 1)$.
+
+\[
+ \vect{g}_0 =
+ \vbl{Fac}\,G\,\vect{f} \transpose =
+ \left[\begin{array}{rrr}
+   1 & 0 &  0 \\
+   0 & 1 & -1 \\
+   0 & 0 &  2 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   7 \\ -2 \\ 1 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   7 \\ -3 \\ 2 \\
+ \end{array}\right]
+\]
+
+Define $\vect{g}_{i+1} \equiv \vbl{Step}\,\vect{g}_i \transpose$.
+
+\[\begin{array}{rcrcl}
+  \vect{g}_0 & = & \vbl{Fac}\,G\,\vect{f} \transpose & = & ( 7, -3, 2) \\
+  \vect{g}_1 & = & \vbl{Step}\,\vect{g}_0 \transpose & = & ( 6, -1, 2) \\
+  \vect{g}_2 & = & \vbl{Step}\,\vect{g}_1 \transpose & = & ( 7,  1, 2) \\
+  \vect{g}_3 & = & \vbl{Step}\,\vect{g}_2 \transpose & = & (10,  3, 2) \\
+  \vect{g}_4 & = & \vbl{Step}\,\vect{g}_3 \transpose & = & (15,  5, 2) \\
+  \vect{g}_5 & = & \vbl{Step}\,\vect{g}_4 \transpose & = & (22,  7, 2) \\
+\end{array}\]
+
+Indeed, $f(4) = 7 - 2\cdot 4 + 4^2 = 15$ and $f(5) = 7 - 2\cdot 5 + 5^2 = 22$.
+By example it has been shown that $f(i) = \vect{g}_i [0]$.
+
+Note that multiplication by $\vbl{Step}$ is equivalent to "adding up the vector".
+That is, $\vect{g}_3 = \vbl{Step}\,\vect{g}_2 = \vbl{Step}\,(7, 1, 2) = (7+1+2, 1+2, 2) = (10, 3, 2)$.
+
+\begin{example}
+ Scaling.
+\end{example}
+
+One way to scale a polynomial by some $c$ is to compute $f(cx)$.
+Using the polynomial from Example \ref{ex:firstpoly} ($f(x)= 7 - 2x + x^2$) and a scale of $c=2$, we would have $f'(x) = f(2x) = 7 - 2 (2x) + (2x)^2 = 7 - 4x + 4x^2$.
+
+This is equivalently computed as $\vec{f'} = (\vbl{Scale}\ 2) \vec{f} = (7, -4, 4)$.
+\[
+ \vect{g'}_0 =
+ \vbl{Fac}\,G\,\vect{f'} \transpose =
+ \left[\begin{array}{rrr}
+   1 & 0 &  0 \\
+   0 & 1 & -1 \\
+   0 & 0 &  2 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   7 \\ -4 \\ 4 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   7 \\ -8 \\ 8 \\
+ \end{array}\right]
+\]
+
+\[
+ \vect{g'}_0 =
+ \vbl{Fac}\,G\,\vect{f'} \transpose =
+ \left[\begin{array}{rrr}
+   1 & 0 &  0 \\
+   0 & 1 & -1 \\
+   0 & 0 &  2 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   7 \\ -8 \\ 16 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   7 \\ -24 \\ 32 \\
+ \end{array}\right]
+\]
+
+$(-n!)$
+
+% 1 (7,  -3,  2)  2^2 - 2 + 3
+% 2 (7,  -8,  8)  3^2 - 2 + 3
+% 3 (7, -15, 18)  4^2 - 2 + 3
+% 4 (7, -24, 32)  5^2 - 2 + 3
+% 5 (7, -35, 50)  6^2 - 2 + 3
+
+\begin{example}
+ Shifting polynomial by $\Delta x$.
+\end{example}
+
+One way to shift a polynomial by some $\Delta x$ is to compute $f(x - \Delta x)$.
+Using the polynomial from Example \ref{ex:firstpoly} ($f(x)= 7 - 2x + x^2$) and a shift of $\Delta x = 3$, we would have $f'(x) = f(x-3) = 7 - 2 (x-3) + (x-3)^2 = 7 - 2x - 6 + x^2 - 6x + 9 = 10 - 8x + x^2$.
+
+What do we get by premultiplying by $\vbl{Fac}\,G$?
+
+\[
+ \vect{g'}_0 =
+ \vbl{Fac}\,G\,\vect{f'} \transpose =
+ \left[\begin{array}{rrr}
+   1 & 0 &  0 \\
+   0 & 1 & -1 \\
+   0 & 0 &  2 \\
+ \end{array}\right]
+ \left[\begin{array}{r}
+   10 \\ -8 \\ 1 \\
+ \end{array}\right]
+ =
+ \left[\begin{array}{r}
+   10 \\ -9 \\ 2 \\
+ \end{array}\right]
+\]
+
+\end{document}
+
