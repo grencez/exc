@@ -1,0 +1,23 @@
+
+\input{preamble}
+
+\begin{document}
+\title{Graph Isomorphism}
+\author{Alex Klinkhamer}
+\maketitle
+
+The graph isomorphism problem is defined as follows:
+Two graphs $G=(V,E)$ and $G'=(V',E')$ are isomorphic if there exists some function $f$ which makes the following conditions hold.
+\[\abs{V'}=\abs{V}\]
+\[V'=\{f(v)\pipe v\in V\}\]
+\[\abs{E'}=\abs{E}\]
+\[E'=\{\{f(u),f(v)\}\pipe \{u,v\}\in E\}\]
+
+We can reduce GI to SAT by conjunction of the following, where variable $f_{ij}$ means that $f(v_i)=v'_j$ where $v_i \in V$ and $v'_j \in V'$.
+\[\forall i : (\exists j : f_{ij}) \wedge (\forall j \ne k: \neg f_{ij} \vee \neg f_{ik})\]
+\[\forall i : \forall j \ne k : \neg f_{ji} \vee \neg f_{ki}\]
+\[\forall \{j_0,j_1\} \in E' : \exists \{i_0,i_1\}\in E : f_{i_0 j_0} \wedge f_{i_1 j_1}\]
+\[\forall \{i_0,i_1\} \in E : \exists \{j_0, j_1\} \in E' : f_{i_0 j_0} \wedge f_{i_1 j_1}\]
+
+\end{document}
+

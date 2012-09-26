@@ -1,0 +1,49 @@
+
+\input{preamble}
+
+\begin{document}
+\title{All Valuations of Variables}
+\author{Alex Klinkhamer}
+\maketitle
+
+\section{Valuation/Integer Equivalence}
+
+Let vector $\vect{d}$ specify the domain of variables.
+That is, $\vect{e}$ is a valuation of $\vect{d}$ iff $\forall i: \vect{e}[i]\in\Nat_{\vect{d}[i]}$.
+Any valuation of $\vect{d}$ can be mapped uniquely to an integer from $0$ to $n=\prod_{i=0}^{\mathit{Size}(\vect{d})-1} \vect{d}[i]-1$.
+That is, $\vect{e}[i]$ represents the $i$th digit of a variable-base number.
+The $i$th digit is of base $\vect{d}[i]$.
+Addition modulo $n$ can be implemented with carry.
+Looping through all valuations of $\vect{d}$ is equivalent to looping through all numbers representable by valuations of $\vect{d}$ ($0,\dots,n$).
+
+\section{Method}
+How does one do that?
+We could of course start at $0$ and continue counting up by $1$ until wrapping around, giving the sequence $0,1,2,\dots,n$.
+Really though, we could start at $0$ and iteratively add a number $m$ coprime with $n$ to get the sequence $(0,m,2m,3m,\dots,(n-1)m)\modop{n}$.
+This can be achieved by repetitive addition of $m$ (modulo $n$) instead of multiplication.
+
+The terminating condition is when the number eventually hits to $0$, since that is equivalent to $n m\modop{n}$.
+
+\section{A Good Coprime}
+
+Use a coprime of $n$ around $m\approx(\phi-1)n$, where $\phi\equiv (\frac{\sqrt{5}-1}{2})$ is the golden ratio, for best results.
+That is, choose an $m$ such that $\frac{m}{n}\approx\frac{n-m}{m}$.
+Simplified, $m^2+mn-n^2\approx 0$.
+
+Alternatively, we can use a coprime of $n$ around $m\approx(2-\phi)n$.
+That is, choose an $m$ such that $\frac{m}{n-m}\approx\frac{n-m}{n}$.
+Simplified, $m^2-3mn+n^2\approx 0$.
+
+\section{Parallel}
+
+If we want to use a cluster of $\abs{P}$ processors, simply start each $P_r$ at $r m\modop{n}$ and continue incrementing by $\abs{P}m$.
+Each processor $P_r$ should stop iterating when it hits $((r - \gcd(\abs{P},n)) \modop{\abs{P}}) m$.
+
+\section{Permutations}
+
+Permutations of an $N$-element array can be represented uniquely by a each valuation of $\vect{d}=(N,N-1,\dots,2,1)$.
+There are of course $n=N!$ valuations.
+Iterate of all valuations of this $\vect{d}$ as shown above to get all permutations.
+
+\end{document}
+

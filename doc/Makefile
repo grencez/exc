@@ -1,7 +1,10 @@
 
 CxPfx = ../../cx
 
-all: polystep.pdf
+all: \
+	gi.pdf \
+	polystep.pdf \
+	valuations.pdf
 
 %.pdf: %.tex $(CxPfx)/doc/preamble.tex
 	env TEXINPUTS=$(CxPfx)/doc:.: pdflatex $<
