@@ -144,28 +144,28 @@ mul_XmQ (XmQ C, const XmQ A, const XmQ B)
 }
 
     uint
-dumpsz_mpq_t (const mpq_t x)
+oputsz_mpq_t (const mpq_t x)
 {
     char buf[1];
     return gmp_snprintf (buf, 0, "%Qd", x);
 }
 
     uint
-dumpsz_col_XmQ (const XmQ A, uint j)
+oputsz_col_XmQ (const XmQ A, uint j)
 {
     uint max = 0;
     for (uint i = 0; i < A->sz[0]; ++i)
     {
-        uint sz = dumpsz_mpq_t (*cell_of_XmQ (A, i, j));
+        uint sz = oputsz_mpq_t (*cell_of_XmQ (A, i, j));
         if (sz > max)  max = sz;
     }
     return max;
 }
 
     void
-dumpw_mpq_t (OFileB* of, const mpq_t x, uint w)
+oputw_mpq_t (OFileB* of, const mpq_t x, uint w)
 {
-    //int n = dumpsz_mpq_t (x);
+    //int n = oputsz_mpq_t (x);
 
     EnsizeTable( of->buf, of->off + w + 1 );
     gmp_snprintf ((char*) &of->buf.s[of->off], w + 1, "%*Qd", w, x);
@@ -174,23 +174,23 @@ dumpw_mpq_t (OFileB* of, const mpq_t x, uint w)
 }
 
     void
-dump_XmQ (OFileB* of, const XmQ A)
+oput_XmQ (OFileB* of, const XmQ A)
 {
     DeclTable( uint, cols );
     SizeTable( cols, A->sz[1] );
 
     for (uint j = 0; j < A->sz[1]; ++j)
-        cols.s[j] = dumpsz_col_XmQ (A, j);
+        cols.s[j] = oputsz_col_XmQ (A, j);
 
     for (uint i = 0; i < A->sz[0]; ++i)
     {
         for (uint j = 0; j < A->sz[1]; ++j)
         {
-            dumpw_mpq_t (of, *cell_of_XmQ (A, i, j), cols.s[j]);
+            oputw_mpq_t (of, *cell_of_XmQ (A, i, j), cols.s[j]);
             if (j + 1 < A->sz[1])
-                dump_char_OFileB (of, ' ');
+                oput_char_OFileB (of, ' ');
             else
-                dump_char_OFileB (of, '\n');
+                oput_char_OFileB (of, '\n');
         }
     }
     LoseTable( cols );
@@ -337,12 +337,12 @@ do_something ()
 
     mul_XmQ (C, A, B);
 
-    dump_XmQ (of, A);
-    dump_char_OFileB (of, '\n');
-    dump_XmQ (of, B);
-    dump_char_OFileB (of, '\n');
-    dump_XmQ (of, C);
-    dump_char_OFileB (of, '\n');
+    oput_XmQ (of, A);
+    oput_char_OFileB (of, '\n');
+    oput_XmQ (of, B);
+    oput_char_OFileB (of, '\n');
+    oput_XmQ (of, C);
+    oput_char_OFileB (of, '\n');
 
     polystep_XmQ (G, 10);
     polystep_inv_XmQ (A, 10);
@@ -367,13 +367,13 @@ do_something ()
         posystep_fac_G_scale_XmQ (B, f->sz[0]-1, a);
 
         mul_XmQ (g, B, f);
-        dump_XmQ (of, g);
+        oput_XmQ (of, g);
         lose_XmQ (f);
         lose_XmQ (g);
     }
 
-    //dump_XmQ (of, B);
-    dump_char_OFileB (of, '\n');
+    //oput_XmQ (of, B);
+    oput_char_OFileB (of, '\n');
 
     lose_XmQ (A);
     lose_XmQ (B);

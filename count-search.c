@@ -96,9 +96,9 @@ int main(int argc, char** argv)
         n += m;
     }
 
-    dump_cstr_OFileB (of, "Ways: ");
-    dump_ujint_OFileB (of, n);
-    dump_char_OFileB (of, '\n');
+    oput_cstr_OFileB (of, "Ways: ");
+    oput_ujint_OFileB (of, n);
+    oput_char_OFileB (of, '\n');
 
     lose_BitTable (&bt);
     LoseTable( L );
