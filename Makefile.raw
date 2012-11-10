@@ -10,7 +10,7 @@ CxPath = ../cx
 BinPath = ../bin
 BldPath = exc
 
-ExeList = count-search polystep
+ExeList = bddtest count-search polystep
 Deps := $(ExeList)
 ExeList := $(addprefix $(BinPath)/,$(ExeList))
 Objs = $(addprefix $(BldPath)/,$(addsuffix .o,$(Deps)))
@@ -18,6 +18,10 @@ Objs = $(addprefix $(BldPath)/,$(addsuffix .o,$(Deps)))
 include $(CxPath)/include.mk
 
 all: $(ExeList)
+
+$(call binexe,bddtest): $(BldPath)/bddtest.o \
+	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(CC) $(CFLAGS) -o $@ $^ -lbdd
 
 $(call binexe,count-search): $(BldPath)/count-search.o \
 	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
