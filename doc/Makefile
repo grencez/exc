@@ -6,7 +6,7 @@ all: \
 	polystep.pdf \
 	valuations.pdf
 
-%.pdf: %.tex $(CxPfx)/doc/preamble.tex
+%.pdf: %.tex $(addprefix $(CxPfx)/doc/,preamble.tex predef.tex)
 	env TEXINPUTS=$(CxPfx)/doc:.: pdflatex $<
 
 .PHONY: clean
