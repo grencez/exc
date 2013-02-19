@@ -119,6 +119,18 @@ lose_XmQ (XmQ A)
     LoseTable( A->t );
 }
 
+  void
+copy_XmQ (XmQ dst, const XmQ src)
+{
+  size_fo_XmQ (dst, src->sz[0], src->sz[1]);
+  {:for (i ; dst->sz[0])
+    {:for (j ; dst->sz[1])
+      mpq_set (*cell_of_XmQ (dst, i, j),
+               *cell_of_XmQ (src, i, j));
+    }
+  }
+}
+
     void
 mul_XmQ (XmQ C, const XmQ A, const XmQ B)
 {
@@ -370,8 +382,10 @@ do_something ()
         oput_XmQ (of, g);
         lose_XmQ (f);
         lose_XmQ (g);
+        mpq_clear (a);
     }
 
+    oput_XmQ (of, A);
     //oput_XmQ (of, B);
     oput_char_OFileB (of, '\n');
 
@@ -390,6 +404,43 @@ int main(int argc, char** argv)
     if (argi < argc)  return 1;
 
     do_something ();
+
+    {
+      OFileB* of = stdout_OFileB ();
+      uint m = 10;
+      XmQ A, B, F;
+
+      init1_XmQ (A, m);
+      init1_XmQ (B, m);
+
+      polystep_XmQ (A, m-1);
+
+      init1_XmQ (F, m);
+
+      {:for (uint i = 2; i < m; ++i)
+        mpq_t* c = cell_of_XmQ (F, i, i);
+
+        mpz_mul_ui (mpq_numref (*c),
+                    mpq_numref (*cell_of_XmQ (F, i-1, i-1)),
+                    i);
+        mpq_canonicalize (*c);
+      }
+
+      oput_XmQ (of, F);
+      oput_char_OFileB (of, '\n');
+      oput_XmQ (of, A);
+      oput_char_OFileB (of, '\n');
+
+
+      mul_XmQ (B, F, A);
+
+      oput_XmQ (of, B);
+      oput_char_OFileB (of, '\n');
+
+      lose_XmQ (A);
+      lose_XmQ (B);
+      lose_XmQ (F);
+    }
 
     lose_sysCx ();
     return 0;
