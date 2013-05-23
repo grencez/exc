@@ -10,12 +10,14 @@ CxPath = ../cx
 BinPath = ../bin
 BldPath = exc
 
-ExeList = bddtest count-search polystep
+ExeList = aperiodic bddtest count-search polystep
 Deps := $(ExeList)
 ExeList := $(addprefix $(BinPath)/,$(ExeList))
 Objs = $(addprefix $(BldPath)/,$(addsuffix .o,$(Deps)))
 
 include $(CxPath)/include.mk
+
+CXXFLAGS += $(CFLAGS)
 
 all: $(ExeList)
 
@@ -30,6 +32,10 @@ $(call binexe,count-search): $(BldPath)/count-search.o \
 $(call binexe,polystep): $(BldPath)/polystep.o \
 	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
 	$(CC) $(CFLAGS) -o $@ $^ -lgmp
+
+$(call binexe,aperiodic): $(BldPathCXX)/aperiodic.o \
+	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 .PHONY: clean
 clean:
