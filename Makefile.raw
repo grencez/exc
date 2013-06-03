@@ -22,19 +22,19 @@ CXXFLAGS += $(CFLAGS)
 all: $(ExeList)
 
 $(call binexe,bddtest): $(BldPath)/bddtest.o \
-	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(addprefix $(CxBldPath)/,alphatab.o fileb.o syscx.o)
 	$(CC) $(CFLAGS) -o $@ $^ -lbdd
 
 $(call binexe,count-search): $(BldPath)/count-search.o \
-	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(addprefix $(CxBldPath)/,alphatab.o fileb.o syscx.o)
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(call binexe,polystep): $(BldPath)/polystep.o \
-	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(addprefix $(CxBldPath)/,alphatab.o fileb.o syscx.o)
 	$(CC) $(CFLAGS) -o $@ $^ -lgmp
 
 $(call binexe,aperiodic): $(BldPathCXX)/aperiodic.o \
-	$(addprefix $(CxBldPath)/,fileb.o syscx.o)
+	$(addprefix $(CxBldPath)/,alphatab.o fileb.o syscx.o)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 .PHONY: clean
