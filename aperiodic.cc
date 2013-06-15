@@ -5,13 +5,14 @@ extern "C" {
 }
 #include "cx/synhax.hh"
 
+#include "cx/map.hh"
 #include "cx/set.hh"
 #include "cx/table.hh"
 
   uint
-LookupSymId (map< Cx::Table<uint>, uint >& idmap, const Cx::Table<uint>& key)
+LookupSymId (Cx::Map< Cx::Table<uint>, uint >& idmap, const Cx::Table<uint>& key)
 {
-  uint* p = MapLookup(idmap, key);
+  uint* p = idmap.lookup(key);
   if (p)  return *p;
 
   uint id = sz_of (idmap);
@@ -22,7 +23,7 @@ LookupSymId (map< Cx::Table<uint>, uint >& idmap, const Cx::Table<uint>& key)
   void
 SelfDisableTiles (Set< Cx::Table<uint> >& acts)
 {
-  map< Cx::Table<uint>, uint > idmap;
+  Cx::Map< Cx::Table<uint>, uint > idmap;
   const uint blank = LookupSymId (idmap, Cx::Table<uint>());
   Set< Cx::Table<uint> > newacts;
 
