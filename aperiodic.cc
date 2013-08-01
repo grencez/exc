@@ -132,8 +132,8 @@ int main (int argc, char** argv)
                    (*it)[0], (*it)[1], (*it)[2]);
   }
 #else
-  OFileB* of = stdout_OFileB ();
-#define OPut(s)  oput_cstr_OFileB (of, s);  oput_char_OFileB (of, '\n');
+  OFile* of = stdout_OFile ();
+#define OPut(s)  oput_cstr_OFile (of, s);  oput_char_OFile (of, '\n');
   OPut( "#define N 5" );
   OPut( "byte x[N];" );
   OPut( "#define x_lo x[(_pid+N-1)%N]" );
@@ -151,14 +151,14 @@ int main (int argc, char** argv)
     }
   }
 
-  printf_OFileB (of, "    select(tmp : 0..%u);\n", dom_max);
+  printf_OFile (of, "    select(tmp : 0..%u);\n", dom_max);
   OPut( "    x_me = tmp;" );
   OPut( "  }" );
   OPut( "  do" );
 
   for (it = acts.begin(); it != acts.end(); ++it) {
-    printf_OFileB (of, "  :: UniAct( %3u, %3u, %3u )\n",
-                   (*it)[0], (*it)[1], (*it)[2]);
+    printf_OFile (of, "  :: UniAct( %3u, %3u, %3u )\n",
+                  (*it)[0], (*it)[1], (*it)[2]);
   }
   OPut( "  od;" );
   OPut( "}" );

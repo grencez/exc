@@ -66,7 +66,7 @@ int main(int argc, char** argv)
     DeclTable( ujint, L );
     ujint n = 0;
     BitTable bt;
-    OFileB* of = stdout_OFileB ();
+    OFile* of = stdout_OFile ();
     if (argi < argc)  return 1;
 
     add_edge (&L, 0, 1);
@@ -96,9 +96,9 @@ int main(int argc, char** argv)
         n += m;
     }
 
-    oput_cstr_OFileB (of, "Ways: ");
-    oput_ujint_OFileB (of, n);
-    oput_char_OFileB (of, '\n');
+    oput_cstr_OFile (of, "Ways: ");
+    oput_ujint_OFile (of, n);
+    oput_char_OFile (of, '\n');
 
     lose_BitTable (&bt);
     LoseTable( L );

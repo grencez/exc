@@ -1,32 +1,37 @@
 
-extern "C" {
-#include "cx/syscx.h"
-#include "cx/alphatab.h"
-}
-#include "cx/synhax.hh"
-
-#include "cx/table.hh"
+#include <vector>
+#include <sstream>
+#include <stdio.h>
+#include <string.h>
+using std::vector;
+using std::istringstream;
+typedef unsigned int uint;
 
   int
 main (int argc, char** argv)
 {
-  int argi = (init_sysCx (&argc, &argv), 1);
+  int argi = 1;
   const uint n = (uint) argc-argi;
   FILE* out = stdout;
-  Cx::Table<uint> t(n);
-  Cx::Table<uint> cards(n);
-  Cx::Table<uint> moves(n, 0);
+  vector<uint> t(n);
+  vector<uint> cards(n);
+  vector<uint> moves(n, 0);
   uint nstartcols = 22;
   uint width = 4;
   char buf[200];
 
+  if (n == 0) {
+    fprintf (stderr, "Usage: %s int [int]*\n", argv[0]);
+    return 1;
+  }
   argv = &argv[argi];
 
   fprintf(out, "N = %u\n", n);
   for (uint i = 0; i < n; ++i) {
-    if (!xget_uint_cstr (&t[i], argv[i])) {
-      DBog1( "Number at index %u is malformed.", i );
-      failout_sysCx ("");
+    istringstream in(argv[i]);
+    in >> t[i];
+    if (in.bad()) {
+      fprintf (stderr, "Number at index %u is malformed: %s\n", i, argv[i]);
       return 1;
     }
   }
@@ -41,7 +46,7 @@ main (int argc, char** argv)
     cards[i] = (uint) diff;
   }
 
-  Cx::Table<uint> playcards( cards );
+  vector<uint> playcards( cards );
   for (bool done = false; !done;) {
     done = true;
     for (uint i = 0; i < n; ++i) {
@@ -139,7 +144,6 @@ main (int argc, char** argv)
     fprintf(out, "%*u", width, a);
   }
   fputc('\n', out);
-  lose_sysCx ();
   return 0;
 }
 

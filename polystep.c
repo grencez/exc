@@ -175,18 +175,18 @@ oputsz_col_XmQ (const XmQ A, uint j)
 }
 
     void
-oputw_mpq_t (OFileB* of, const mpq_t x, uint w)
+oputw_mpq_t (OFile* of, const mpq_t x, uint w)
 {
     //int n = oputsz_mpq_t (x);
 
     EnsizeTable( of->buf, of->off + w + 1 );
     gmp_snprintf ((char*) &of->buf.s[of->off], w + 1, "%*Qd", w, x);
     of->off += w;
-    mayflush_OFileB (of);
+    mayflush_OFile (of);
 }
 
     void
-oput_XmQ (OFileB* of, const XmQ A)
+oput_XmQ (OFile* of, const XmQ A)
 {
     DeclTable( uint, cols );
     SizeTable( cols, A->sz[1] );
@@ -200,9 +200,9 @@ oput_XmQ (OFileB* of, const XmQ A)
         {
             oputw_mpq_t (of, *cell_of_XmQ (A, i, j), cols.s[j]);
             if (j + 1 < A->sz[1])
-                oput_char_OFileB (of, ' ');
+                oput_char_OFile (of, ' ');
             else
-                oput_char_OFileB (of, '\n');
+                oput_char_OFile (of, '\n');
         }
     }
     LoseTable( cols );
@@ -331,7 +331,7 @@ posystep_fac_G_scale_XmQ (XmQ C, uint n, mpq_t a)
     void
 do_something ()
 {
-    OFileB* of = stdout_OFileB ();
+    OFile* of = stdout_OFile ();
     XmQ A, B, C;
     XmQ G;
     init1_XmQ (A, 3);
@@ -350,11 +350,11 @@ do_something ()
     mul_XmQ (C, A, B);
 
     oput_XmQ (of, A);
-    oput_char_OFileB (of, '\n');
+    oput_char_OFile (of, '\n');
     oput_XmQ (of, B);
-    oput_char_OFileB (of, '\n');
+    oput_char_OFile (of, '\n');
     oput_XmQ (of, C);
-    oput_char_OFileB (of, '\n');
+    oput_char_OFile (of, '\n');
 
     polystep_XmQ (G, 10);
     polystep_inv_XmQ (A, 10);
@@ -387,7 +387,7 @@ do_something ()
 
     oput_XmQ (of, A);
     //oput_XmQ (of, B);
-    oput_char_OFileB (of, '\n');
+    oput_char_OFile (of, '\n');
 
     lose_XmQ (A);
     lose_XmQ (B);
@@ -406,7 +406,7 @@ int main(int argc, char** argv)
     do_something ();
 
     {
-      OFileB* of = stdout_OFileB ();
+      OFile* of = stdout_OFile ();
       uint m = 10;
       XmQ A, B, F;
 
@@ -427,15 +427,15 @@ int main(int argc, char** argv)
       }
 
       oput_XmQ (of, F);
-      oput_char_OFileB (of, '\n');
+      oput_char_OFile (of, '\n');
       oput_XmQ (of, A);
-      oput_char_OFileB (of, '\n');
+      oput_char_OFile (of, '\n');
 
 
       mul_XmQ (B, F, A);
 
       oput_XmQ (of, B);
-      oput_char_OFileB (of, '\n');
+      oput_char_OFile (of, '\n');
 
       lose_XmQ (A);
       lose_XmQ (B);
