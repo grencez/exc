@@ -10,7 +10,8 @@ CxPath = ../cx
 BinPath = ../bin
 BldPath = exc
 
-ExeList = aperiodic bddtest leadercard count-search polystep
+ExeList = aperiodic leadercard count-search polystep
+#ExeList += bddtest
 Deps := $(ExeList)
 ExeList := $(addprefix $(BinPath)/,$(ExeList))
 Objs = $(addprefix $(BldPath)/,$(addsuffix .o,$(Deps)))
