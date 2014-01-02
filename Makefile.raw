@@ -10,7 +10,7 @@ CxPath = ../cx
 BinPath = ../bin
 BldPath = exc
 
-ExeList = aperiodic leadercard count-search
+ExeList = aperiodic leadercard count-search urandom
 #ExeList += polystep
 #ExeList += bddtest
 Deps := $(ExeList)
@@ -31,6 +31,9 @@ $(call binexe,count-search): $(BldPath)/count-search.o $(CxStdObjs)
 
 $(call binexe,polystep): $(BldPath)/polystep.o $(CxStdObjs)
 	$(CC) $(CFLAGS) -o $@ $^ -lgmp
+
+$(call binexe,urandom): $(BldPath)/urandom.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 $(call binexe,aperiodic): $(BldPathCXX)/aperiodic.o $(CxStdObjs)
 	$(CXX) $(CXXFLAGS) -o $@ $^

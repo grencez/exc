@@ -10,6 +10,7 @@ set (BldPath exc)
 list (APPEND CFiles
   count-search.c
   polystep.c
+  urandom.c
   )
 list (APPEND CCFiles
   aperiodic.cc
@@ -23,6 +24,7 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BinPath})
 addbinexe (aperiodic aperiodic.cc)
 addbinexe (leadercard leadercard.cc)
 addbinexe (count-search count-search.c)
+addbinexe (urandom urandom.c)
 
 addbinexe (polystep polystep.c)
 target_link_libraries (polystep gmp)
