@@ -3,8 +3,8 @@ cmake_minimum_required (VERSION 2.8)
 
 project (exc)
 
-set (CxPath ../cx)
-set (BinPath ../bin)
+set (CxPath ${CMAKE_CURRENT_SOURCE_DIR}/../cx)
+set (BinPath ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 set (BldPath exc)
 
 list (APPEND CFiles
