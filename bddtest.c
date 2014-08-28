@@ -87,7 +87,7 @@ int main (int argc, char** argv)
         cnt = bdd_getnodenum ();
         printf ("Still have %d nodes!\n", cnt);
     }
-    
+
     lose_sysCx ();
     return 0;
 }
