@@ -16,10 +16,12 @@ list (APPEND CFiles
   polystep.c
   urandom.c
   bddtest.c
+  fliptil.c
   )
 list (APPEND CCFiles
   aperiodic.cc
   leadercard.cc
+  pazucarlo.cc
   )
 
 include (${CxPath}/include.cmake)
@@ -30,6 +32,8 @@ addbinexe (aperiodic aperiodic.cc)
 addbinexe (leadercard leadercard.cc)
 addbinexe (count-search count-search.c)
 addbinexe (urandom urandom.c)
+addbinexe (fliptil fliptil.c)
+addbinexe (pazucarlo pazucarlo.cc)
 
 addbinexe (polystep polystep.c)
 target_link_libraries (polystep gmp)
