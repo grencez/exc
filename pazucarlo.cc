@@ -37,6 +37,33 @@ bool has_match(const Cx::Table<uint>& cells, uint ncols)
   return false;
 }
 
+void testme()
+{
+  const int ncols = 6;
+#define r 0
+#define g 1
+#define b 2
+#define l 3
+#define d 4
+#define h 5
+  const int myboard[30] = {
+    r, l, d, d, h, l,
+    g, b, b, d, g, r,
+    h, h, d, r, l ,h,
+    l, g, l, r, h, h,
+    h, r, l, b, d, l
+  };
+#undef r
+#undef g
+#undef b
+#undef l
+#undef d
+#undef h
+  Cx::Table<uint> cells;
+  cells.assign(&myboard[0], &myboard[30]);
+  Claim(!has_match(cells, ncols));
+}
+
 int main(int argc, char** argv)
 {
   int argi =
@@ -50,6 +77,8 @@ int main(int argc, char** argv)
   uint nmatches = 0;
   uint npermatch = 0;
   uint ntrials = 0;
+
+  //testme();
 
   if (argv[argi] && xget_uint_cstr (&nmatches, argv[argi]))
     argi += 1;
