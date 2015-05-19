@@ -5,9 +5,8 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 project (exc)
 
-list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
-
-set (CxPath ${CMAKE_CURRENT_SOURCE_DIR}/../cx)
+set (CxPath ${CMAKE_CURRENT_SOURCE_DIR}/../dep/cx)
+list (APPEND CMAKE_MODULE_PATH ${CxPath}/cmake)
 set (BinPath ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 set (BldPath exc)
 
