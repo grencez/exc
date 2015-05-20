@@ -22,21 +22,33 @@
 /* #include <mpir.h> */
 
 typedef unsigned int uint;
+typedef int Bool;
+
 
 int main()
 {
   FILE* out = stdout;
   const uint MinBase = 3;
   const uint MaxBase = 5;
+  const uint ProgressFrequency = 100;
   uint base = MaxBase;
   mpz_t guess;
   mpz_t high, r1, r2;
-  int passing = 1;
-  size_t progress_ndigits = 0;
+  Bool passing = 1;
+  size_t progress = ProgressFrequency;
 
   /* Initialized with a guess of 2.*/
   mpz_init_set_ui (guess, 2);
-  //mpz_init_set_ui (guess, 82001);
+
+  /* Alternative initializations.*/
+  if (0) {
+    mpz_set_ui (guess, 82001);
+  }
+  if (0) {
+    size_t base10digits = 332000;
+    mpz_set_ui (guess, 10);
+    mpz_pow_ui (guess, guess, base10digits-1);
+  }
 
   mpz_init (high);
   mpz_init (r1);
@@ -55,17 +67,27 @@ int main()
    */
   while (base >= MinBase) {
     size_t ndigits;
-    int passed = 1;
+    Bool passed = 1;
     ndigits = mpz_sizeinbase(guess, base);
     mpz_ui_pow_ui(high, base, ndigits);
     mpz_set(r1, guess);
 
-    {
+    if (progress >= ProgressFrequency) {
+      Bool made_progress = 1;
       size_t base10digits = mpz_sizeinbase(guess, 10);
-      if (base10digits > progress_ndigits) {
+      /* When ProgressFrequency==0, report progress when #digits changes.*/
+      if (ProgressFrequency > 0)
+        progress = 0;
+      else if (base10digits > progress)
+        progress = base10digits;
+      else
+        made_progress = 0;
+
+      if (made_progress)
         fprintf (out, "digits: %u\n", (uint)base10digits);
-        progress_ndigits = base10digits;
-      }
+    }
+    else {
+      progress += 1;
     }
 
     while (mpz_cmp_ui(high, 1) > 0) {
