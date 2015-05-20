@@ -16,6 +16,7 @@ list (APPEND CFiles
   urandom.c
   bddtest.c
   fliptil.c
+  basedsearch.c
   )
 list (APPEND CCFiles
   aperiodic.cc
@@ -36,6 +37,9 @@ addbinexe (pazucarlo pazucarlo.cc)
 
 addbinexe (polystep polystep.c)
 target_link_libraries (polystep gmp)
+
+addbinexe (basedsearch basedsearch.c)
+target_link_libraries (basedsearch gmp)
 
 find_package (Buddy)
 if (BUDDY_FOUND)
