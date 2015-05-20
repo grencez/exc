@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <gmp.h>
+/* #include <mpir.h> */
 
 typedef unsigned int uint;
 
@@ -30,6 +31,7 @@ int main()
   uint base = MaxBase;
   mpz_t guess;
   mpz_t high, r1, r2;
+  int passing = 1;
   size_t progress_ndigits = 0;
 
   /* Initialized with a guess of 2.*/
@@ -48,8 +50,8 @@ int main()
    *   base == MaxBase-1
    *   ...
    *   base == MinBase
+   * And if {passing} is still true, the loop terminates with:
    *   base == MinBase-1 (success!)
-   * But reset {base} to {MinBase} upon failure.
    */
   while (base >= MinBase) {
     size_t ndigits;
@@ -85,7 +87,12 @@ int main()
       mpz_sub(guess, guess, r1);
       mpz_mul_ui(high, high, base);
       mpz_add(guess, guess, high);
+      passing = 0;
+    }
+
+    if (base == MinBase && !passing) {
       base = MaxBase;
+      passing = 1;
     }
     else {
       base -= 1;

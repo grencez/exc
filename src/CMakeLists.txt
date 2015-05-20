@@ -39,6 +39,7 @@ addbinexe (polystep polystep.c)
 target_link_libraries (polystep gmp)
 
 addbinexe (basedsearch basedsearch.c)
+#target_link_libraries (basedsearch mpir)
 target_link_libraries (basedsearch gmp)
 
 find_package (Buddy)
