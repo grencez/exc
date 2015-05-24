@@ -7,7 +7,7 @@ project (exc)
 
 find_package(OpenMP)
 
-set (CxPath ${CMAKE_CURRENT_SOURCE_DIR}/../dep/cx)
+set (CxPath ${CMAKE_CURRENT_SOURCE_DIR}/../dep/cx/src)
 list (APPEND CMAKE_MODULE_PATH ${CxPath}/cmake)
 set (BinPath ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 set (BldPath exc)
