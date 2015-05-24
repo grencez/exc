@@ -21,12 +21,12 @@ bool has_match(const Cx::Table<uint>& cells, uint ncols)
       bool vmatch = false;
       if (c2 < ncols) {
         hmatch =
-          (cells[r0*ncols+c0] == cells[r0*ncols+c1] && 
+          (cells[r0*ncols+c0] == cells[r0*ncols+c1] &&
            cells[r0*ncols+c0] == cells[r0*ncols+c2]);
       }
       if (r2 < nrows) {
         vmatch =
-          (cells[r0*ncols+c0] == cells[r1*ncols+c0] && 
+          (cells[r0*ncols+c0] == cells[r1*ncols+c0] &&
            cells[r0*ncols+c0] == cells[r2*ncols+c0]);
       }
 
