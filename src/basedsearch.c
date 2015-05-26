@@ -21,8 +21,10 @@
 #include <gmp.h>
 /* #include <mpir.h> */
 
+#ifndef NO_MAIN_FUNC
 typedef unsigned int uint;
 typedef int Bool;
+#endif
 
 static const uint MinBase = 3;
 static const uint MaxBase = 5;
@@ -37,6 +39,7 @@ static const uint MaxBase = 5;
  * needed to represent {guess} exceeds {nbits}.
  * This allows the search to be partitioned across threads.
  */
+static
   Bool
 try_until (mpz_t guess, mp_bitcnt_t nbits,
            /* The rest are just temporaries.*/
@@ -97,6 +100,7 @@ try_until (mpz_t guess, mp_bitcnt_t nbits,
 }
 
 
+#ifndef NO_MAIN_FUNC
 /** The main function.
  *
  * Here we have logic for partitioning the search across threads.
@@ -177,8 +181,8 @@ int main()
     found = try_until (guess, nbits, high, r1, r2);
 
     if (found) {
-      {
 #pragma omp critical (some_found)
+      {
         some_found = 1;
         mpz_set (answer, guess);
       }
@@ -220,5 +224,5 @@ int main()
 
   return 0;
 }
-
+#endif
 

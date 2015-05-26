@@ -6,6 +6,7 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 project (exc)
 
 find_package(OpenMP)
+find_package(MPI)
 
 set (CxPath ${CMAKE_CURRENT_SOURCE_DIR}/../dep/cx/src)
 list (APPEND CMAKE_MODULE_PATH ${CxPath}/cmake)
@@ -24,6 +25,7 @@ list (APPEND CCFiles
   aperiodic.cc
   leadercard.cc
   pazucarlo.cc
+  basedsearch-mpi.cc
   )
 
 include (${CxPath}/include.cmake)
@@ -51,6 +53,38 @@ if (OPENMP_FOUND)
     set_property (TARGET ${target_name}
       APPEND_STRING PROPERTY LINK_FLAGS " ${OpenMP_C_FLAGS}")
   endforeach ()
+endif ()
+
+if (MPI_FOUND)
+  addbinexe (basedsearch-mpi
+    basedsearch-mpi.cc
+    ${CxBldPath}/mpidissem.cc
+    ${CxBldPath}/kautz.cc
+    ${CxBldPath}/mpiloop.cc
+    )
+  set_property (TARGET basedsearch-mpi
+    APPEND PROPERTY INCLUDE_DIRECTORIES ${MPI_INCLUDE_PATH})
+  target_link_libraries (basedsearch-mpi ${MPI_LIBRARIES})
+  target_link_libraries (basedsearch-mpi gmp)
+
+  if(MPI_COMPILE_FLAGS)
+    set (MPI_COMPILE_FLAGS "${MPI_COMPILE_FLAGS} ${DEFAULT_COMPILE_FLAGS}")
+  else()
+    set (MPI_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS})
+  endif()
+
+  string (REGEX REPLACE "(^| )[/-]ansi($| )" " "
+    MPI_COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+  string (REGEX REPLACE "(^| )[/-]pedantic($| )" " "
+    MPI_COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+
+  set_target_properties (basedsearch-mpi PROPERTIES
+    COMPILE_FLAGS ${MPI_COMPILE_FLAGS})
+
+  if(MPI_LINK_FLAGS)
+    set_target_properties (basedsearch-mpi PROPERTIES
+      LINK_FLAGS "${MPI_LINK_FLAGS}")
+  endif()
 endif ()
 
 find_package (Buddy)
