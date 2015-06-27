@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 
   /* Alternative initializations.*/
   if (0) {
-    size_t base10digits = 432000;
+    size_t base10digits = 11000000;
     mpz_set_ui (guess, 10);
     mpz_pow_ui (guess, guess, base10digits-1);
   }

@@ -4,8 +4,8 @@
  *
  * 82000 works for base 2 thru 5.
  * Can you find anything higher?
- * How about for base 2 thru 6?
- * (Or perhaps a nonexistence proof is needed!)
+ * I have checked up to 11 million decimal digits without finding anything.
+ * Perhaps a nonexistence proof is needed!
  *
  * Compile with:
  *   gcc basedsearch.c -lgmp -o basedsearch
