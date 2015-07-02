@@ -121,7 +121,7 @@ int main(int argc, char** argv)
     else if (eq_cstr ("-ntrials", arg)) {
       arg = argv[argi++];
       if (!xget_uint_cstr (&ntrials, arg))
-        failout_sysCx("Need a number after -trials.");
+        failout_sysCx("Need a number after -ntrials.");
     }
     else if (eq_cstr ("-skill-board", arg)) {
       arg = argv[argi++];
@@ -184,7 +184,7 @@ int main(int argc, char** argv)
     << "\nOrbs per match (fixed): " << n_per_match
     << "\nTotal orbs (fixed): " << n_total_orbs
     << "\nMatches allowed on board? " << (matches_allowed ? "yes" : "no")
-    << "\nRandom source: " << (use_system_urandom ? "/dev/urandom" : "Marsaglia")
+    << "\nRandom source: " << (use_system_urandom ? "/dev/urandom" : "pseudo")
     << "\n" << HorizLine
     << olog.endl();
 

@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     while (x < excess && x > -excess) {
       if (i == NBitsInByte) {
         i = 0;
-        randomize(&b, sizeof(b));
+        Randomize( b );
       }
       x += (b % 2 == 1) ? 1 : 0;
       b /= 2;
