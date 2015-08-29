@@ -8,7 +8,7 @@ extern "C" {
 #include "cx/syscx.h"
 }
 #define NO_MAIN_FUNC
-#include "basedsearch.c"
+#include "search82000.c"
 #undef NO_MAIN_FUNC
 
 #include "cx/mpiloop.hh"

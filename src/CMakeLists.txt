@@ -21,13 +21,13 @@ list (APPEND CFiles
   urandom.c
   bddtest.c
   fliptil.c
-  basedsearch.c
+  search82000.c
   )
 list (APPEND CCFiles
   aperiodic.cc
   leadercard.cc
   pazucarlo.cc
-  basedsearch-mpi.cc
+  search82000-mpi.cc
   )
 
 include (${CxTopPath}/src/include.cmake)
@@ -44,12 +44,12 @@ addbinexe (pazucarlo pazucarlo.cc)
 addbinexe (polystep polystep.c)
 target_link_libraries (polystep gmp)
 
-addbinexe (basedsearch basedsearch.c)
-#target_link_libraries (basedsearch mpir)
-target_link_libraries (basedsearch gmp)
+addbinexe (search82000 search82000.c)
+#target_link_libraries (search82000 mpir)
+target_link_libraries (search82000 gmp)
 
 if (OPENMP_FOUND)
-  foreach (target_name basedsearch)
+  foreach (target_name search82000)
     set_property (TARGET ${target_name}
       APPEND_STRING PROPERTY COMPILE_FLAGS " ${OpenMP_C_FLAGS}")
     set_property (TARGET ${target_name}
@@ -58,16 +58,16 @@ if (OPENMP_FOUND)
 endif ()
 
 if (MPI_FOUND)
-  addbinexe (basedsearch-mpi
-    basedsearch-mpi.cc
+  addbinexe (search82000-mpi
+    search82000-mpi.cc
     ${CxBldPath}/mpidissem.cc
     ${CxBldPath}/kautz.cc
     ${CxBldPath}/mpiloop.cc
     )
-  set_property (TARGET basedsearch-mpi
+  set_property (TARGET search82000-mpi
     APPEND PROPERTY INCLUDE_DIRECTORIES ${MPI_INCLUDE_PATH})
-  target_link_libraries (basedsearch-mpi ${MPI_LIBRARIES})
-  target_link_libraries (basedsearch-mpi gmp)
+  target_link_libraries (search82000-mpi ${MPI_LIBRARIES})
+  target_link_libraries (search82000-mpi gmp)
 
   if(MPI_COMPILE_FLAGS)
     set (MPI_COMPILE_FLAGS "${MPI_COMPILE_FLAGS} ${DEFAULT_COMPILE_FLAGS}")
@@ -80,11 +80,11 @@ if (MPI_FOUND)
   string (REGEX REPLACE "(^| )[/-]pedantic($| )" " "
     MPI_COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
 
-  set_target_properties (basedsearch-mpi PROPERTIES
+  set_target_properties (search82000-mpi PROPERTIES
     COMPILE_FLAGS ${MPI_COMPILE_FLAGS})
 
   if(MPI_LINK_FLAGS)
-    set_target_properties (basedsearch-mpi PROPERTIES
+    set_target_properties (search82000-mpi PROPERTIES
       LINK_FLAGS "${MPI_LINK_FLAGS}")
   endif()
 endif ()
