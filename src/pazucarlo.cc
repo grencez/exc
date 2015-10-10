@@ -7,6 +7,7 @@ extern "C" {
 #include "cx/table.hh"
 #include "cx/urandom.hh"
 
+
 bool has_match(const Cx::Table<uint>& cells, uint ncols)
 {
   const uint nrows = cells.sz() / ncols;
@@ -37,16 +38,18 @@ bool has_match(const Cx::Table<uint>& cells, uint ncols)
   return false;
 }
 
-uint count_combos(const Cx::Table<uint>& color_counts)
+uint count_combos(const Cx::Table<uint>& color_counts, uint nrows, uint ncols)
 {
   const uint ncolors = color_counts.sz();
   uint combos = 0;
   for (uint i = 0; i < ncolors; ++i) {
-    if (color_counts[i] <= 15) {
+    if (color_counts[i] <= (nrows * ncols / 2)) {
       combos += color_counts[i] / 3;
     }
-    if (color_counts[i] > 15) {
-      combos += 6 - (color_counts[i] - 13) / 3;
+    else {
+      // This may be low.
+      combos += nrows*ncols/6 - (color_counts[i] - (nrows*ncols/2-2)) / 3;
+      //combos += 6 - (color_counts[i] - 13) / 3;
     }
   }
   return combos;
@@ -101,7 +104,8 @@ int main(int argc, char** argv)
   uint n_match_colors = 6;
   uint n_total_colors = 6;
   uint n_per_match = 3;
-  uint n_total_orbs = 30;
+  uint nrows = 5;
+  uint ncols = 6;
   bool skill_board = false;
   bool combo_leader = false;
   bool matches_allowed = false;
@@ -122,6 +126,14 @@ int main(int argc, char** argv)
       arg = argv[argi++];
       if (!xget_uint_cstr (&ntrials, arg))
         failout_sysCx("Need a number after -ntrials.");
+    }
+    else if (eq_cstr ("-dims", arg)) {
+      arg = argv[argi++];
+      if (!xget_uint_cstr (&nrows, arg))
+        failout_sysCx("Need #rows and #cols after -dims.");
+      arg = argv[argi++];
+      if (!xget_uint_cstr (&ncols, arg))
+        failout_sysCx("Need #rows and #cols after -dims.");
     }
     else if (eq_cstr ("-skill-board", arg)) {
       arg = argv[argi++];
@@ -167,6 +179,9 @@ int main(int argc, char** argv)
   if (combo_leader) {
     n_match_colors = n_total_colors;
   }
+  else if (n_match_colors > n_total_colors) {
+    n_match_colors = n_total_colors;
+  }
 
   static const char HorizLine[] = "--------------------------------";
   olog << HorizLine
@@ -182,7 +197,7 @@ int main(int argc, char** argv)
     << "\nTotal colors: " << n_total_colors
     << "\nTrials: " << ntrials
     << "\nOrbs per match (fixed): " << n_per_match
-    << "\nTotal orbs (fixed): " << n_total_orbs
+    << "\nBoard size: " << nrows << "x" << ncols
     << "\nMatches allowed on board? " << (matches_allowed ? "yes" : "no")
     << "\nRandom source: " << (use_system_urandom ? "/dev/urandom" : "pseudo")
     << "\n" << HorizLine
@@ -191,9 +206,6 @@ int main(int argc, char** argv)
   if (!combo_leader) {
     if (n_required_matches > n_match_colors) {
       failout_sysCx("Not enough colors to match.");
-    }
-    if (n_match_colors > n_total_colors) {
-      failout_sysCx("Too many match colors.");
     }
   }
   if (ntrials == 0) {
@@ -209,13 +221,13 @@ int main(int argc, char** argv)
   uint npasses = 0;
   uint nmistrials = 0;
 
-  Cx::Table<uint> cells( n_total_orbs );
+  Cx::Table<uint> cells( nrows * ncols );
   for (uint trial_idx = 0; trial_idx < ntrials;) {
     for (uint i = 0; i < cells.sz(); ++i) {
       cells[i] = urandom.pick(n_total_colors);
     }
 
-    if (!matches_allowed && has_match (cells, 6)) {
+    if (!matches_allowed && has_match (cells, ncols)) {
       nmistrials += 1;
       continue;
     }
@@ -231,7 +243,7 @@ int main(int argc, char** argv)
     {
       bool good = true;
       for (uint i = 0; i < n_total_colors; ++i) {
-        if (color_counts[i] > 15) {
+        if (color_counts[i] > nrows * ncols / 2) {
           good = false;
         }
       }
@@ -250,7 +262,7 @@ int main(int argc, char** argv)
 
     uint nmatches = 0;
     if (combo_leader) {
-      nmatches = count_combos (color_counts);
+      nmatches = count_combos (color_counts, nrows, ncols);
     }
     else {
       nmatches = count_matches (color_counts, n_match_colors);
