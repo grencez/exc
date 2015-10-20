@@ -182,7 +182,7 @@ oputw_mpq_t (OFile* of, const mpq_t x, uint w)
     EnsizeTable( of->buf, of->off + w + 1 );
     gmp_snprintf ((char*) &of->buf.s[of->off], w + 1, "%*Qd", w, x);
     of->off += w;
-    mayflush_OFile (of);
+    mayflush_OFile (of, May);
 }
 
     void
