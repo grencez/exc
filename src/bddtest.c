@@ -7,9 +7,7 @@
 
 int main (int argc, char** argv)
 {
-    int argi =
-        (init_sysCx (&argc, &argv),
-         1);
+    int argi = init_sysCx (&argc, &argv);
     const int xdomsz = 4;
     int xdoms[3];
 

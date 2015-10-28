@@ -96,9 +96,7 @@ void testme()
 
 int main(int argc, char** argv)
 {
-  int argi =
-    (init_sysCx (&argc, &argv),
-     1);
+  int argi = init_sysCx (&argc, &argv);
   Cx::OFile olog( stdout_OFile() );
   uint n_required_matches = 4;
   uint n_match_colors = 6;
