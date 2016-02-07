@@ -6,7 +6,7 @@ int main(int argc, char** argv)
 {
   int argi = init_sysCx (&argc, &argv);
   int excess = 0;
-  ujint ntrials = 0;
+  luint ntrials = 0;
 
   if (argi +1 != argc)  return 1;
   excess = atoi(argv[argi]);
@@ -14,9 +14,9 @@ int main(int argc, char** argv)
   {
     int x = 0;
     byte b = 0;
-    uint i = NBitsInByte;
+    uint i = BYTE_BIT;
     while (x < excess && x > -excess) {
-      if (i == NBitsInByte) {
+      if (i == BYTE_BIT) {
         i = 0;
         Randomize( b );
       }
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
     }
   }
 
-  oput_ujint_OFile (stdout_OFile (), ntrials);
+  oput_luint_OFile (stdout_OFile (), ntrials);
   oput_char_OFile (stdout_OFile (), '\n');
   lose_sysCx ();
   return 0;

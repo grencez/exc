@@ -275,8 +275,8 @@ int main(int argc, char** argv)
       olog << olog.endl();
     }
 
-    const ujint percent_complete = (100 * (ujint) (trial_idx+1)) / ntrials;
-    if (trial_idx==0 || percent_complete > (100 * (ujint) trial_idx) / ntrials) {
+    const luint percent_complete = (100 * (luint) (trial_idx+1)) / ntrials;
+    if (trial_idx==0 || percent_complete > (100 * (luint) trial_idx) / ntrials) {
       fprintf(stderr, "\r%3lu%% complete...", percent_complete);
     }
 

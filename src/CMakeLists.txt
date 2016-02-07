@@ -1,5 +1,5 @@
 
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.1)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
@@ -96,4 +96,13 @@ if (BUDDY_FOUND)
   target_link_libraries (bddtest ${BUDDY_LIBRARIES})
 endif ()
 
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wextra -Wall")
+set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3")
+
+if (NOT CMAKE_BUILD_TYPE)
+  set (CMAKE_BUILD_TYPE RelWithDebInfo)
+endif()
+
+add_executable (soniagen soniagen.cc)
 
