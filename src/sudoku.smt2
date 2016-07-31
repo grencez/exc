@@ -11,12 +11,24 @@
 ;; Technically this should be here for the use of (get-value) at the end.
 (set-option :produce-models true)
 
+;; Declare a finite-domain type called Val with 9 possible values V1..V9.
 (declare-datatypes () ((Val V1 V2 V3 V4 V5 V6 V7 V8 V9)))
 
+;; Uninterpreted function that serves as a Sudoku board
+;; from (board 0 0) to (board 8 8) because 0-indexing is best indexing.
 (declare-fun board (Int Int) Val)
 
+;; Check that an index is in bounds.
 (define-fun check_index ((i Int)) Bool
   (and (>= i 0) (< i 9)))
+
+;; If you use Int instead of Val for values on the board,
+;; then uncomment this assertion to ensure that:
+;; All values are between 1 and 9 (inclusive).
+;(assert
+;  (forall ((row Int) (col Int))
+;    (and (>= (board row col) 1)
+;         (<= (board row col) 9))))
 
 ;; All values in a row are unique.
 (assert
