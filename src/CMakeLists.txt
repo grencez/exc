@@ -24,7 +24,6 @@ list (APPEND CFiles
   search82000.c
   )
 list (APPEND CCFiles
-  aperiodic.cc
   leadercard.cc
   pazucarlo.cc
   search82000-mpi.cc
@@ -34,7 +33,6 @@ include (${CxTopPath}/src/include.cmake)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BinPath})
 
-addbinexe (aperiodic aperiodic.cc)
 addbinexe (leadercard leadercard.cc)
 addbinexe (count-search count-search.c)
 addbinexe (urandom urandom.c)
