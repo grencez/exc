@@ -90,6 +90,16 @@ endif ()
 find_package (Buddy)
 if (BUDDY_FOUND)
   addbinexe (bddtest bddtest.c)
+
+  set (BUDDY_COMPILE_FLAGS ${DEFAULT_COMPILE_FLAGS})
+  string (REGEX REPLACE "(^| )[/-]ansi($| )" " "
+    BUDDY_COMPILE_FLAGS "${BUDDY_COMPILE_FLAGS}")
+  string (REGEX REPLACE "(^| )[/-]pedantic($| )" " "
+    BUDDY_COMPILE_FLAGS "${BUDDY_COMPILE_FLAGS}")
+
+  set_target_properties (bddtest PROPERTIES
+    COMPILE_FLAGS ${BUDDY_COMPILE_FLAGS})
+
   target_include_directories (bddtest PUBLIC ${BUDDY_INCLUDE_DIR})
   target_link_libraries (bddtest ${BUDDY_LIBRARIES})
 endif ()

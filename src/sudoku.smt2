@@ -19,7 +19,7 @@
 (declare-fun board (Int Int) Val)
 
 ;; Check that an index is in bounds.
-(define-fun check_index ((i Int)) Bool
+(define-fun valid_index ((i Int)) Bool
   (and (>= i 0) (< i 9)))
 
 ;; If you use Int instead of Val for values on the board,
@@ -36,9 +36,9 @@
     (=>
       (and
         (not (= i j))
-        (check_index row)
-        (check_index i)
-        (check_index j))
+        (valid_index row)
+        (valid_index i)
+        (valid_index j))
       (not (= (board row i)
               (board row j))))))
 
@@ -48,9 +48,9 @@
     (=>
       (and
         (not (= i j))
-        (check_index col)
-        (check_index i)
-        (check_index j))
+        (valid_index col)
+        (valid_index i)
+        (valid_index j))
       (not (= (board i col)
               (board j col))))))
 
@@ -62,8 +62,8 @@
       ;; If the below 3 are true...
       (and
         ;; 1. Row and column indices are in bounds.
-        (check_index row1) (check_index col1)
-        (check_index row2) (check_index col2)
+        (valid_index row1) (valid_index col1)
+        (valid_index row2) (valid_index col2)
         ;; 2. They are not the same elements.
         (or (not (= row1 row2))
             (not (= col1 col2)))
